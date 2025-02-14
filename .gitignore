@@ -1,0 +1,7 @@
+*.pyc*
+*.xml
+/.idea
+__pycache__
+.idea/
+*.iml
+.django-env
