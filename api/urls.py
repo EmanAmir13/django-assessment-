@@ -1,5 +1,8 @@
-from django.urls import path, include
+from django.urls import path
+
+from api.views.authentications import RegisterView, LoginView
 
 urlpatterns = [
-    path('v0/', include('v0.urls')),  # Route to versioned API
+    path('register/', RegisterView.as_view(), name='register'),
+    path('login/', LoginView.as_view(), name='login'),
 ]
