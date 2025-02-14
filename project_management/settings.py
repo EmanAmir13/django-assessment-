@@ -36,8 +36,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
+
 EXTERNAL_APPS = [
-    'api.apps.ApiConfig'
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'django_extensions',
+    'api'
 ]
 INSTALLED_APPS = INSTALLED_APPS + EXTERNAL_APPS
 
@@ -122,3 +126,9 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
