@@ -41,7 +41,8 @@ EXTERNAL_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'django_extensions',
-    'api'
+    'api',
+    'pytest_django',
 ]
 INSTALLED_APPS = INSTALLED_APPS + EXTERNAL_APPS
 
