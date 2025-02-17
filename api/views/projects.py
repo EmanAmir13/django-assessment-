@@ -13,7 +13,20 @@ class ProjectListCreateView(generics.ListCreateAPIView):
 
     def post(self, request, *args, **kwargs):
         self.permission_classes = [IsAdmin]  # Only Admins can create
-        return self.create(request, *args, **kwargs)
+        self.check_permissions(request)
+
+        # mutable copy of request.data
+        data = request.data.copy()
+        data["creator"] = request.user.id
+
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return response.Response(
+            {"message": f"Project '{serializer.data['title']}' has been created successfully."},
+            status=status.HTTP_201_CREATED
+        )
 
 
 class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -24,9 +37,15 @@ class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         self.permission_classes = [IsAdmin]  # Only Admins can delete
+        self.check_permissions(request)  # Ensure permission is checked correctly
+
         project = self.get_object()
-        response_message = {"message": f"Project '{project.title}' has been deleted successfully."}
-        return self.destroy(request, *args, **kwargs, response_message=response_message)
+        super().delete(request, *args, **kwargs)  # Perform deletion
+
+        return response.Response(
+            {"message": f"Project '{project.title}' has been deleted successfully."},
+            status=status.HTTP_200_OK
+        )
 
     def put(self, request, *args, **kwargs):
         """Override update to return a success message."""
