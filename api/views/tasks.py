@@ -1,13 +1,17 @@
 from rest_framework import generics, permissions, response, status
+from rest_framework.pagination import PageNumberPagination
+
 from api.models import Task
 from api.permissions import IsAdmin, CanUpdateTaskStatus
 from api.serializers.task import TaskSerializer
+
 
 class TaskListCreateView(generics.ListCreateAPIView):
     """List all tasks or create a new one (Admins only)."""
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     permission_classes = [permissions.IsAuthenticated]
+    pagination_class = PageNumberPagination
 
     def post(self, request, *args, **kwargs):
         self.permission_classes = [IsAdmin]  # Only Admins can create tasks
@@ -16,6 +20,7 @@ class TaskListCreateView(generics.ListCreateAPIView):
             {"message": "Task created successfully", "task": response_data.data},
             status=status.HTTP_201_CREATED
         )
+
 
 class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     """Retrieve, update, or delete a task. Only Admins can delete, Members can update status."""
