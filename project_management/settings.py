@@ -43,6 +43,7 @@ EXTERNAL_APPS = [
     'django_extensions',
     'api',
     'pytest_django',
+    'drf_yasg',
 ]
 INSTALLED_APPS = INSTALLED_APPS + EXTERNAL_APPS
 
